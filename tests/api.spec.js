@@ -58,8 +58,6 @@ test("Расстояние между аэропортами", async ({
     destinationAirport,
   );
   const body = await response.json();
-
-  console.log("Рассточние между аэропортами", body);
   expect(response.status()).toBe(200);
   expect(body?.data?.attributes?.kilometers).toBeDefined();
   expect(body?.data?.attributes?.kilometers).toBeGreaterThan(0);
