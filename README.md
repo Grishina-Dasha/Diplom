@@ -17,7 +17,12 @@
 ---
 
 ## 🛠 Технологический стек
-![JavaScript](docs/images/jsIcon.gif) ![Playwright](docs/images/playwright-original.svg) ![GitHub Actions](docs/images/gitIco.svg) ![Allure Report](docs/images/allure2icon.png) ![Allure TestOps](docs/images/allure2icon.png) ![Telegram](docs/images/telegramIcon.gif)  
+<img src="docs/images/jsIcon.gif" alt="JavaScript" width="40" height="40">
+<img src="docs/images/playwright-original.svg" alt="Playwright" width="40" height="40">
+<img src="docs/images/gitIco.svg" alt="GitHub Actions" width="40" height="40">
+<img src="docs/images/allure2icon.png" alt="Allure Report" width="40" height="40">
+<img src="docs/images/allureicon.png" alt="Allure TestOps" width="40" height="40">
+<img src="docs/images/telegramIcon.gif" alt="Telegram" width="40" height="40"> 
 - **Язык:** JavaScript  
 - **Фреймворк для тестов:** Playwright  
 - **CI/CD:** GitHub Actions  
@@ -48,8 +53,9 @@
 
 ## 🔄 CI/CD и отчеты
 
-- Все тесты запускаются автоматически при push или pull request через GitHub Actions.
+- Все тесты запускаются автоматически при push через GitHub Actions.
 - Результаты сохраняются как артефакты GitHub.
+  ![Artifacts](docs/images/Artifacts.png)
 - Отчёты визуализируются с помощью Allure Report.  
   ![Пример Allure Report](docs/images/Allure_report.png)
 - История прогонов передается в Allure TestOps для удобного анализа.  
