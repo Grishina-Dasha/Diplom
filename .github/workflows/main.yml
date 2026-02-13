@@ -30,7 +30,7 @@ jobs:
           ALLURE_LAUNCH_NAME: "Diplom CI #${{ github.run_number }}"
         continue-on-error: true
         if: always()
-      - name: Сгенерировать allure 3 отчет в один файл
+      - name: Генерация single-file Allure отчета
         run: npx allure awesome ./allure-results --single-file
         continue-on-error: true
         if: always()
@@ -44,4 +44,28 @@ jobs:
               allure-report/index.html
               allure-results
               playwright-report
+        # Отправка отчета в Telegram (файл)
+      - name: Send Allure report to Telegram
+        if: always()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          if [ -f allure-report/index.html ]; then
+            curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendDocument" \
+              -F chat_id="${TELEGRAM_CHAT_ID}" \
+              -F document=@allure-report/index.html \
+              -F caption="Allure report (single-file)"
+          fi
+      # Отправка текстового уведомления в Telegram
+      - name: Send test summary to Telegram
+        if: always()
+        env:
+          TELEGRAM_BOT_TOKEN: ${{ secrets.TELEGRAM_BOT_TOKEN }}
+          TELEGRAM_CHAT_ID: ${{ secrets.TELEGRAM_CHAT_ID }}
+        run: |
+          curl -s -X POST "https://api.telegram.org/bot${TELEGRAM_BOT_TOKEN}/sendMessage" \
+            -d chat_id="${TELEGRAM_CHAT_ID}" \
+            -d text="Diplom CI #${{ github.run_number }}: Прогон завершён. Статус: ${{ job.status }}. Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+
       
