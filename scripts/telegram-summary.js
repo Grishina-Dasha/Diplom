@@ -50,7 +50,6 @@ let text = `Прогон тестов завершён
 
 ${diagram}`;
 
-if (reportLink) text += `\n\n📎 <a href="${reportLink}">Allure отчёт</a>`;
 if (runLink) text += ` | <a href="${runLink}">Open run</a>`;
 
 const params = new URLSearchParams({ chat_id: chatId, parse_mode: 'HTML', text });
