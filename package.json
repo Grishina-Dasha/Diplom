@@ -6,7 +6,6 @@
   "scripts": {
     "test": "npx playwright test",
     "report": "npx playwright show-report",
-    "codogen":"npx playwright test --ui",
     "ui": "npx playwright test --ui",
     "test:ui": "npx playwright test tests/ui.spec.js",
     "test:api": "npx playwright test tests/api.spec.js",
