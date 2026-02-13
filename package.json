@@ -22,9 +22,11 @@
   "homepage": "https://github.com/Grishina-Dasha/Diplom#readme",
   "devDependencies": {
     "@playwright/test": "^1.58.2",
-    "@types/node": "^25.2.2"
+    "@types/node": "^25.2.2",
+    "allure-playwright": "^3.4.5"
   },
   "dependencies": {
-    "@faker-js/faker": "^10.3.0"
+    "@faker-js/faker": "^10.3.0",
+    "allure": "^3.1.0"
   }
 }
