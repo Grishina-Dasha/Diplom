@@ -9,6 +9,19 @@ on:
 jobs:
   DiplomTest:
     runs-on: ubuntu-latest
+    env:
+      # API и UI
+      API_URL: ${{ secrets.API_URL }}
+      UI_URL: ${{ secrets.UI_URL }}
+
+      # Данные пользователей для тестов UI
+      SAUCE_LOGIN: ${{ secrets.SAUCE_LOGIN }}
+      SAUCE_PASSWORD: ${{ secrets.SAUCE_PASSWORD }}
+      SAUCE_LOGIN_NEGATIVE: ${{ secrets.SAUCE_LOGIN_NEGATIVE }}
+
+      # Данные для Airportgap API
+      AIRPORTGAP_EMAIL: ${{ secrets.AIRPORTGAP_EMAIL }}
+      AIRPORTGAP_PASSWORD: ${{ secrets.AIRPORTGAP_PASSWORD }}
     steps:
       - name: Checkout
         uses: actions/checkout@v6.0.1
