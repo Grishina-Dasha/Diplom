@@ -5,9 +5,8 @@ export class AuthService {
   }
 
   async getToken() {
-    // Тут сразу указываем реальные данные
-    const email = 'cawef38976@deposin.com';
-    const password = 'airport';
+    const email = process.env.AIRPORTGAP_EMAIL;
+    const password = process.env.AIRPORTGAP_PASSWORD;
 
     const response = await this.request.post(`${this.baseUrl}/tokens`, {
       data: { email, password },

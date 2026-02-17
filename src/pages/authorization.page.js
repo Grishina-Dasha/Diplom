@@ -3,12 +3,11 @@ export class AuthorizationPage {
         this.page = page;
         this.nameInput = page.locator('[data-test="username"]');
         this.passwordInput = page.locator('[data-test="password"]');
-        //техническое описание страницы
         this.loginButton = page.locator('#login-button').describe('Кнопка авторизации');
+        this.textError = page.locator('[data-test="error"]');
     }
-    //бизнесовые действия
     async open(url){
-        await this.page.goto(url);
+        await this.page.goto(url || process.env.UI_URL);
     }
     async authorization (name,password) {
         await this.nameInput.click();

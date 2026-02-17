@@ -7,13 +7,15 @@ export class AirportService {
   async getAll() {
     const response = await this.request.get(`${this.baseUrl}/airports`);
     const data = await response.json();
-    return {data, response}; // возвращаем массив аэропортов
+    return {data, response};
   }
 
   async getDistance(token, from, to) {
-    return this.request.post(`${this.baseUrl}/airports/distance`, {
+    const response = await this.request.post(`${this.baseUrl}/airports/distance`, {
       headers: { Authorization: `Bearer token=${token}` },
       data: { from, to },
     });
+    const data = await response.json();
+    return {response, data};
   }
 }

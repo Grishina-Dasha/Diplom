@@ -1,15 +1,13 @@
 import { expect } from "@playwright/test";
-import { AirportService, FavoritesService } from "../src/services/index";
 import { test } from "../src/helpers/fixtures/api.fuxture";
 import { faker } from "@faker-js/faker";
+import 'dotenv/config';
+
 
 const API_URL = "https://airportgap.com/api";
 
-test("Получение списка аэропортов", async ({ request }) => {
-  const response = await request.get(`${API_URL}/airports`);
-  expect(response.status()).toBe(200);
-
-  const body = await response.json();
+test("Получение списка аэропортов", async ({ api }) => {
+  const {data:body} = await api.getAllAirports();
   const airports = body.data;
 
   expect(Array.isArray(airports)).toBe(true);
@@ -45,84 +43,56 @@ test("Получение списка аэропортов", async ({ request })
   };
   airports.forEach(checkAirport);
 });
-test("Расстояние между аэропортами", async ({
-  request,
-  token,
-  airportData,
-}) => {
-  const { originAirport, destinationAirport } = airportData;
-  const airportService = new AirportService(request, API_URL);
-  const response = await airportService.getDistance(
-    token,
-    originAirport,
-    destinationAirport,
-  );
-  const body = await response.json();
+test("Расстояние между аэропортами", async ({ api }) => {
+  const token = await api.getAuthToken({ email: process.env.EMAIL, password: process.env.PASSWORD });
+  const { originAirport, destinationAirport } = await api.prepareAirportsAndFavorite(token);
+
+  const { data: body, response } = await api.getDistance(token, originAirport, destinationAirport);
+
   expect(response.status()).toBe(200);
   expect(body?.data?.attributes?.kilometers).toBeDefined();
   expect(body?.data?.attributes?.kilometers).toBeGreaterThan(0);
 });
-test("Добавление и удаление аэропорта в избранное", async ({
-  request,
-  token,
-  airportData,
+test("Добавление и удаление аэропорта в избранное", async ({api
 }) => {
-  const { originAirport } = airportData;
-  const favoritesService = new FavoritesService(request, API_URL);
-  await favoritesService.clearAll(token);
+  const token = await api.getAuthToken({ email: process.env.EMAIL, password: process.env.PASSWORD });
+  const { originAirport } = await api.prepareAirportsAndFavorite(token);
 
-  // Добавляем в избранное
-  const { data: addData, response: addResponse } = await favoritesService.add(
-    token,
-    originAirport,
-  );
+  await api.clearFavorites(token);
+
+  const { data: addData, response: addResponse } = await api.addAirportToFavorites(token, originAirport);
   expect(addResponse.status()).toBe(201);
-
   const favoriteId = addData?.data?.id;
   expect(favoriteId).toBeDefined();
+  expect(addData?.data?.attributes?.airport?.iata).toBe(originAirport);
 
-  // Проверяем, что airport.id соответствует отправленному
-  const returnedAirportId = addData?.data?.attributes?.airport?.iata;
-  expect(returnedAirportId).toBe(originAirport);
-
-  // Удаляем избранное
-  const { data: delData, response: delResponse } =
-    await favoritesService.delete(token, favoriteId);
+  const { response: delResponse } = await api.removeFavorite(token, favoriteId);
   expect(delResponse.status()).toBe(204);
-  expect(delData).toBeNull();
+
 });
-test("Полная очистка избранного", async ({ request, token }) => {
-  const favoritesService = new FavoritesService(request, API_URL);
-  const { data, response } = await favoritesService.clearAll(token);
+test("Полная очистка избранного", async ({ api }) => {
+  const token = await api.getAuthToken({ email: process.env.EMAIL, password: process.env.PASSWORD });
+  const { response, data } = await api.clearFavorites(token);
+
   expect(response.status()).toBe(204);
   expect(data).toBeNull();
 });
-test('Обновление заметки в избранном', async ({ request, token }) => {
-  const favoritesService = new FavoritesService(request, API_URL);
-  const airportService = new AirportService(request, API_URL);
 
-  // 1. Получаем аэропорт динамически
-  const { data: airports } = await airportService.getAll();
-  const airportId = airports.data[0].id;
+test("Обновление заметки в избранном", async ({ api }) => {
+  const token = await api.getAuthToken({ email: process.env.EMAIL, password: process.env.PASSWORD });
+  const { originAirport } = await api.prepareAirportsAndFavorite(token);
 
-  // 2. Очистить избранное
-  await favoritesService.clearAll(token);
+  await api.clearFavorites(token);
 
-  // 3. Добавить
-  const { data: addData } = await favoritesService.add(token, airportId);
+  const { data: addData } = await api.addAirportToFavorites(token, originAirport);
   const favoriteId = addData.data.id;
 
-  // 4. Обновить note
   const newNote = faker.lorem.sentence();
-
-  const { data, response } = await favoritesService.update(
-    token,
-    favoriteId,
-    newNote
-  );
+  const { data, response } = await api.updateFavoriteNote(token, favoriteId, newNote);
 
   expect(response.status()).toBe(200);
   expect(data.data.attributes.note).toBe(newNote);
 });
+
 
 
