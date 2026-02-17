@@ -17,7 +17,7 @@ test('Пользователь может выйти из аккаунта', asy
 test('Попытка авторизации с некорректными данными', async ({ page }) => {
     const app = new AppFacade(page);
     const user = new AuthUserBuilder()
-  .withName(process.env.SAUCE_LOGIN_NEGATIV)
+  .withName(process.env.SAUCE_LOGIN_NEGATIVE)
   .withPassword(process.env.SAUCE_PASSWORD)
   .build();
      сonsole.log(user);
