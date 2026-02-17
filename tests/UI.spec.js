@@ -20,6 +20,7 @@ test('Попытка авторизации с некорректными дан
   .withName(process.env.SAUCE_LOGIN_NEGATIV)
   .withPassword(process.env.SAUCE_PASSWORD)
   .build();
+     сonsole.log(user);
     await app.login(user);
     await app.expectErrorVisible("Epic sadface: Sorry, this user has been locked out.");
 });
