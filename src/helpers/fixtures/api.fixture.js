@@ -1,5 +1,5 @@
 import { test as base } from "@playwright/test";
-import {ApiFacade} from "../../services/api.facade"
+import {ApiFacade} from "../../services/index";
 
 export const test = base.extend({
   api: async ({ request }, use) => {

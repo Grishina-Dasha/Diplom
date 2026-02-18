@@ -1,7 +1,7 @@
 import { AuthService } from './auth.service';
 import { AirportService } from './airports.service';
 import { FavoritesService } from './favorite.service';
-//export { ApiFacade };
+import {test} from "@playwright/test"
 
 
 export class ApiFacade {
@@ -13,56 +13,89 @@ export class ApiFacade {
     this.favorites = new FavoritesService(request, baseUrl);
   }
   async getAuthToken(user) {
-    return this.auth.getToken(user);
-  }
+  return await test.step('Получение токена авторизации', async () => {
+    return await this.auth.getToken(user);
+  });
+}
 
-  async getAllAirports() {
-    return this.airports.getAll();
-  }
-  async getDistance(token, originId, destinationId) {
-    return this.airports.getDistance(token, originId, destinationId);
-  }
+async getAllAirports() {
+  return await test.step('Получение списка аэропортов', async () => {
+    return await this.airports.getAll();
+  });
+}
 
-  async addAirportToFavorites(token, airportId) {
-    return this.favorites.add(token, airportId);
-  }
+async getDistance(token, originId, destinationId) {
+  return await test.step(
+    `Расчёт расстояния между ${originId} и ${destinationId}`,
+    async () => {
+      return await this.airports.getDistance(token, originId, destinationId);
+    }
+  );
+}
 
-
-  async removeFavorite(token, favoriteId) {
-    return this.favorites.delete(token, favoriteId);
-  }
-
-
-  async clearFavorites(token) {
-    return this.favorites.clearAll(token);
-  }
-
-
-  async updateFavoriteNote(token, favoriteId, note) {
-    return this.favorites.update(token, favoriteId, note);
-  }
+async addAirportToFavorites(token, airportId) {
+  return await test.step(
+    `Добавление аэропорта ${airportId} в избранное`,
+    async () => {
+      return await this.favorites.add(token, airportId);
+    }
+  );
+}
 
 
-  async prepareAirportsAndFavorite(token) {
-    const { data } = await this.airports.getAll();
-    const airports = data.data;
+async removeFavorite(token, favoriteId) {
+  return await test.step(
+    `Удаление аэропорта из избранного (id=${favoriteId})`,
+    async () => {
+      return await this.favorites.delete(token, favoriteId);
+    }
+  );
+}
 
-    const index1 = Math.floor(Math.random() * airports.length);
 
-    let index2;
-    do {
-      index2 = Math.floor(Math.random() * airports.length);
-    } while (index2 === index1);
+async clearFavorites(token) {
+  return await test.step('Очистка всего избранного', async () => {
+    return await this.favorites.clearAll(token);
+  });
+}
 
-    const originAirport = airports[index1].id;
-    const destinationAirport = airports[index2].id;
+async updateFavoriteNote(token, favoriteId, note) {
+  return await test.step(
+    `Обновление заметки в избранном (id=${favoriteId})`,
+    async () => {
+      return await this.favorites.update(token, favoriteId, note);
+    }
+  );
+}
 
-    const { data: favoriteData } = await this.favorites.add(token, originAirport);
-    const favoriteId = favoriteData?.data?.id;
+async prepareAirportsAndFavorite(token) {
+  return await test.step(
+    'Подготовка двух случайных аэропортов и создание избранного',
+    async () => {
+      const { data } = await this.airports.getAll();
+      const airports = data.data;
 
-    return { originAirport, destinationAirport, favoriteId };
-  }
+      const index1 = Math.floor(Math.random() * airports.length);
 
+      let index2;
+      do {
+        index2 = Math.floor(Math.random() * airports.length);
+      } while (index2 === index1);
+
+      const originAirport = airports[index1].id;
+      const destinationAirport = airports[index2].id;
+
+      const { data: favoriteData } = await this.favorites.add(
+        token,
+        originAirport
+      );
+
+      const favoriteId = favoriteData?.data?.id;
+
+      return { originAirport, destinationAirport, favoriteId };
+    }
+  );
+}
 
 }
 

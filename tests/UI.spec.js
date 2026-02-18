@@ -1,7 +1,6 @@
 import { expect } from '@playwright/test';
 import {test} from '../src/helpers/fixtures/fixture';
 import {OrderUserBuilder,AuthUserBuilder} from '../src/helpers/builders/index';
-import { AppFacade } from '../src/pages/app.facade';
 import 'dotenv/config';
 
 
@@ -11,17 +10,21 @@ test('Пользователь может авторизоваться', async (
 });
 
 test('Пользователь может выйти из аккаунта', async ({ authApp }) => {
-  await authApp.logout();
-  await authApp.expectLoginFormVisible();
+    await authApp.logout();
+    await expect(authApp.authPage.nameInput).toBeVisible();
+    await expect(authApp.authPage.passwordInput).toBeVisible();
+    await expect(authApp.authPage.loginButton).toBeVisible();
+
 });
-test('Попытка авторизации с некорректными данными', async ({ page }) => {
-    const app = new AppFacade(page);
-    const user = new AuthUserBuilder()
+
+
+test('Попытка авторизации с некорректными данными', async ({ app }) => {
+    const invalidUser = new AuthUserBuilder()
   .withName(process.env.SAUCE_LOGIN_NEGATIVE)
   .withPassword(process.env.SAUCE_PASSWORD)
   .build();
-    await app.login(user);
-    await app.expectErrorVisible("Epic sadface: Sorry, this user has been locked out.");
+    await app.login(invalidUser);
+    await expect(app.getErrorMessage()).toContainText("Epic sadface: Sorry, this user has been locked out.");
 });
 });
 test.describe('Корзина', () => {

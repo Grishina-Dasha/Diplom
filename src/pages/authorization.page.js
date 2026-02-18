@@ -6,8 +6,8 @@ export class AuthorizationPage {
         this.loginButton = page.locator('#login-button').describe('Кнопка авторизации');
         this.textError = page.locator('[data-test="error"]');
     }
-    async open(url){
-        await this.page.goto(url || process.env.UI_URL);
+    async open(path = '/'){
+        await this.page.goto(path);
     }
     async authorization (name,password) {
         await this.nameInput.click();

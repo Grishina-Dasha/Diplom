@@ -1,5 +1,5 @@
 import { test as base } from '@playwright/test';
-import { AppFacade } from '../../pages/app.facade';
+import { AppFacade } from '../../pages/index';
 import { AuthUserBuilder } from '../builders/index';
 
 export const test = base.extend({

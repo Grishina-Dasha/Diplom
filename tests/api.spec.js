@@ -1,10 +1,7 @@
 import { expect } from "@playwright/test";
-import { test } from "../src/helpers/fixtures/api.fuxture";
+import { test } from "../src/helpers/fixtures/api.fixture";
 import { faker } from "@faker-js/faker";
 import 'dotenv/config';
-
-
-const API_URL = "https://airportgap.com/api";
 
 test("Получение списка аэропортов", async ({ api }) => {
   const {data:body} = await api.getAllAirports();
