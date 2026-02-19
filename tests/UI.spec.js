@@ -31,18 +31,18 @@ test.describe('Корзина', () => {
 test('Добавление одного товара в корзину', async ({ authApp }) => {
     const previousCount = await authApp.products.getCartCount();
     await authApp.addProductsToCart(1);
-    await expect(authApp.products.cartBeadge).toHaveText(String(previousCount+1));
+    await expect(authApp.products.cartBadge).toHaveText(String(previousCount+1));
 });
 test('Добавление нескольких товаров в корзину', async ({ authApp }) => {
     const previousCount = await authApp.products.getCartCount();
     await authApp.addProductsToCart(2);
-    await expect(authApp.products.cartBeadge).toHaveText(String(previousCount+2));
+    await expect(authApp.products.cartBadge).toHaveText(String(previousCount+2));
 });
 
 test('Удаление товара из корзины', async ({ authApp }) => {
     await authApp.addProductsToCart(1);
     await authApp.removeProductFromCart();
-    await expect(authApp.products.cartBeadge).not.toBeVisible();
+    await expect(authApp.products.cartBadge).not.toBeVisible();
 });
 });
 
@@ -55,19 +55,19 @@ test('Оформление заказа', async ({ authApp }) => {
     await authApp.goToCart();
     await expect(authApp.cart.cardTitle).toHaveText('Your Cart');
     await authApp.checkout(user_order);
-    await expect(authApp.checkout_step.compleateHeader).toContainText("Thank you for your order!");
+    await expect(authApp.checkout_step.completeHeader).toContainText("Thank you for your order!");
 });
 });
 
 test.describe('Сортировки', () => {
 test('Сортировка по цене (low to hight)', async ({ authApp }) => {
-    await authApp.sortByPriceLowToHight();
+    await authApp.sortByPriceLowToHigh();
     const prices = await authApp.getProductPrices();
    const sorted = [...prices].sort((a, b) => a - b);
    expect(prices).toEqual(sorted);
 });
 test('Сортировка по цене (hight to low)', async ({ authApp }) => {
-    await authApp.sortByPriceHightToLow();
+    await authApp.sortByPriceHighToLow();
     const prices = await authApp.getProductPrices();
    const sorted = [...prices].sort((a, b) => b - a);
    expect(prices).toEqual(sorted);

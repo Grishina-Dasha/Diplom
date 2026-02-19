@@ -65,15 +65,15 @@ async addProductsToCart(count = 1) {
   });
 }
 
- async sortByPriceLowToHight() {
+ async sortByPriceLowToHigh() {
   await test.step('Сортировка по возрастанию цены', async () => {
-    await this.products.sortLowToHight();
+    await this.products.sortLowToHigh();
   });
 }
 
-  async sortByPriceHightToLow(){
+  async sortByPriceHighToLow(){
     await test.step('Сортировка по убыванию цены', async () => {
-    await this.products.sortHightToLow();
+    await this.products.sortHighToLow();
     });
   }
   async getProductPrices(){

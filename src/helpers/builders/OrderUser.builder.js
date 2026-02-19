@@ -14,7 +14,10 @@ export class OrderUserBuilder{
     }
     build()
     {
-        const result = {... this}
-        return result;
+       return {
+    firstName: this.firstName,
+    lastName: this.lastName,
+    postCode: this.postCode,
+  };
     }
 }

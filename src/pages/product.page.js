@@ -5,7 +5,7 @@ export class ProductsPage {
         this.addToCartButton = page.locator('[data-test="add-to-cart-sauce-labs-backpack"]');
         this.addToCartButton2 = page.locator('[data-test="add-to-cart-sauce-labs-bike-light"]');
         this.cartButton = page.locator('[data-test="shopping-cart-link"]');
-        this.cartBeadge = page.locator('[data-test="shopping-cart-badge"]');
+        this.cartBadge = page.locator('[data-test="shopping-cart-badge"]');
         this.removeButton = page.locator('[data-test="remove-sauce-labs-backpack"]');
         this.sortButton = page.locator('[data-test="product-sort-container"]');
         this.prices = page.locator('[data-test="inventory-item-price"]');
@@ -23,20 +23,20 @@ export class ProductsPage {
     }
 
     async getCartCount() {
-    const countExists = await this.cartBeadge.count();
+    const countExists = await this.cartBadge.count();
     if (countExists === 0) return 0;
 
-    const text = await this.cartBeadge.textContent();
+    const text = await this.cartBadge.textContent();
     return parseInt(text || '0', 10);
 }
     async remove(){
         await this.removeButton.click();
     }
 
-    async sortLowToHight(){
+    async sortLowToHigh(){
         await this.sortButton.selectOption('lohi');
     }
-    async sortHightToLow(){
+    async sortHighToLow(){
         await this.sortButton.selectOption('hilo');
     }
     async getPrices(){

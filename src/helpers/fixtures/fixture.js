@@ -6,7 +6,7 @@ export const test = base.extend({
     app: async ({page}, use) => { 
 
         const app = new AppFacade(page);
-        await use (app);
+        await use(app);
         
     },
    authApp: async ({ page }, use) => {

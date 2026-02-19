@@ -6,7 +6,7 @@ export class Checkout_Step {
         this.postalCodeInput = page.locator('[data-test="postalCode"]');
         this.continueButton = page.locator('[data-test="continue"]');
         this.finishButton = page.locator('[data-test="finish"]');
-        this.compleateHeader = page.locator('[data-test="complete-header"]');
+        this.completeHeader = page.locator('[data-test="complete-header"]');
     }
 
     async  making_order(firstName,lastName,postCode){

@@ -7,7 +7,7 @@
     "test": "npx playwright test",
     "report": "npx playwright show-report",
     "ui": "npx playwright test --ui",
-    "test:ui": "npx playwright test tests/ui.spec.js",
+    "test:ui": "npx playwright test tests/UI.spec.js",
     "test:api": "npx playwright test tests/api.spec.js",
     "allure:single": "npx allure awesome ./allure-results --single-file"
   },

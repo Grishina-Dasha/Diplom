@@ -41,7 +41,7 @@ test("Получение списка аэропортов", async ({ api }) => 
   airports.forEach(checkAirport);
 });
 test("Расстояние между аэропортами", async ({ api }) => {
-  const token = await api.getAuthToken({ email: process.env.EMAIL, password: process.env.PASSWORD });
+  const token = await api.getAuthToken({ email: process.env.AIRPORTGAP_EMAIL, password: process.env.AIRPORTGAP_PASSWORD });
   const { originAirport, destinationAirport } = await api.prepareAirportsAndFavorite(token);
 
   const { data: body, response } = await api.getDistance(token, originAirport, destinationAirport);
@@ -52,7 +52,7 @@ test("Расстояние между аэропортами", async ({ api }) =
 });
 test("Добавление и удаление аэропорта в избранное", async ({api
 }) => {
-  const token = await api.getAuthToken({ email: process.env.EMAIL, password: process.env.PASSWORD });
+  const token = await api.getAuthToken({ email: process.env.AIRPORTGAP_EMAIL, password: process.env.AIRPORTGAP_PASSWORD });
   const { originAirport } = await api.prepareAirportsAndFavorite(token);
 
   await api.clearFavorites(token);
@@ -68,7 +68,7 @@ test("Добавление и удаление аэропорта в избра�
 
 });
 test("Полная очистка избранного", async ({ api }) => {
-  const token = await api.getAuthToken({ email: process.env.EMAIL, password: process.env.PASSWORD });
+  const token = await api.getAuthToken({ email: process.env.AIRPORTGAP_EMAIL, password: process.env.AIRPORTGAP_PASSWORD});
   const { response, data } = await api.clearFavorites(token);
 
   expect(response.status()).toBe(204);
@@ -76,7 +76,7 @@ test("Полная очистка избранного", async ({ api }) => {
 });
 
 test("Обновление заметки в избранном", async ({ api }) => {
-  const token = await api.getAuthToken({ email: process.env.EMAIL, password: process.env.PASSWORD });
+  const token = await api.getAuthToken({  email: process.env.AIRPORTGAP_EMAIL, password: process.env.AIRPORTGAP_PASSWORD});
   const { originAirport } = await api.prepareAirportsAndFavorite(token);
 
   await api.clearFavorites(token);

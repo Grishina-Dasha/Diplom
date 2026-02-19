@@ -12,7 +12,9 @@ export class AuthUserBuilder{
         return this;
     }
    build() {
-  const result = { ...this };
-  return result;
+    return {
+    name: this.name,
+    password: this.password,
+  };
 }
 }

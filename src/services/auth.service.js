@@ -4,12 +4,12 @@ export class AuthService {
     this.baseUrl = baseUrl;
   }
 
-  async getToken() {
-    const email = process.env.AIRPORTGAP_EMAIL;
-    const password = process.env.AIRPORTGAP_PASSWORD;
-
+  async getToken(user) {
     const response = await this.request.post(`${this.baseUrl}/tokens`, {
-      data: { email, password },
+      data: {  
+      email: user.email,
+      password: user.password, 
+    },
     });
 
     const body = await response.json();
